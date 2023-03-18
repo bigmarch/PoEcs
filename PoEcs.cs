@@ -209,6 +209,7 @@ namespace PoEcs
 					Element = new GridElement[_typeList.Count]
 				};
 
+				// 新的一行中，生成所有 element。 
 				for (var i = 0; i < row.Element.Length; i++)
 				{
 					row.Element[i] = new GridElement();
@@ -703,20 +704,6 @@ namespace PoEcs
 
 		private EntityManager _entityManager;
 		
-		// protected EntityManager EntityManager => _entityManager;
-
-		// private EntityManager.Query _internalQuery;
-		//
-		// protected EntityManager.Query GetInternalQuery()
-		// {
-		// 	if (_internalQuery == null)
-		// 	{
-		// 		_internalQuery = new EntityManager.Query(_entityManager);
-		// 	}
-		//
-		// 	return _internalQuery;
-		// }
-
 		protected T GetBridgeData<T>()
 			where T : struct, IBridgeData
 		{
@@ -810,12 +797,7 @@ namespace PoEcs
 				_systemList[i].OnTick(deltaTime);
 			}
 		}
-
-		public bool HasEntity(int entityId)
-		{
-			return _entityManager.HasEntity(entityId);
-		}
-
+		
 		public int CreateEntity()
 		{
 			return _entityManager.CreateEntity();
@@ -826,18 +808,17 @@ namespace PoEcs
 			_entityManager.DestroyEntity(entityId);
 		}
 
+		public bool HasEntity(int entityId)
+		{
+			return _entityManager.HasEntity(entityId);
+		}
+		
 		public void AddComponent<T>(int entityId, T data = default)
 			where T : struct, IComponentData
 		{
 			_entityManager.AddComponent(entityId, data);
 		}
-
-		// public void AddDynamicBuffer<T>(int entityId)
-		// 	where T : struct, IBufferElementData
-		// {
-		// 	_entityManager.AddDynamicBuffer<T>(entityId);
-		// }
-
+		
 		public T GetComponentData<T>(int entityId)
 			where T : struct, IComponentData
 		{
@@ -906,5 +887,13 @@ namespace PoEcs
 			Debug.LogError("Bridge 没有这个类型的 Bridge Data: " + key);
 			return default;
 		}
+	}
+
+	public static class Extensions
+	{
+		// public static World AddComponent<T>(this World world, int entityId, T data = default)
+		// {
+		// 	return	world.AddComponent(entityId, data);
+		// }
 	}
 }
